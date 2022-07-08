@@ -68,29 +68,42 @@ func romanToInt(s string) int {
 }
 
 func intToRoman(num int) string {
+	const LEN = 13
 	var (
-		lit           = make(map[int]rune)
-		counter       = 0
-		prevChar rune = ' '
-		//number        = 0
-		sum     = 0
-		prevVal = 0
+		result string
+		lit    = make(map[int]string)
+		nums   = [LEN]int{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1}
 	)
 
-	lit[1]    = 'I'
-	lit[5]    = 'V'
-	lit[10]   = 'X'
-	lit[50]   = 'L'
-	lit[1000] = 'C'
-	lit[500]  = 'D'
-	lit[1000] = 'M'
+	lit[1] = "I"
+	lit[4] = "IV"
+	lit[5] = "V"
+	lit[9] = "IX"
+	lit[10] = "X"
+	lit[40] = "XL"
+	lit[50] = "L"
+	lit[90] = "XC"
+	lit[100] = "C"
+	lit[400] = "CD"
+	lit[500] = "D"
+	lit[900] = "CM"
+	lit[1000] = "M"
 
-	if num > 0 && num < 3909 {
-
-
-
+	for j := 0; j < LEN; j++ {
+		if num > 0 && num < 4000 {
+			res := num / nums[j]
+			if res > 3 {
+				result = result + lit[nums[j]]
+				result = result + lit[nums[j-1]]
+			} else {
+				for i:=res;i>0;i-- {
+					result = result + lit[nums[j]]
+				}
+			}
+			num-=nums[j]*res
+		} else { break }
 	}
-
+	return result
 }
 
 func main() {
@@ -101,7 +114,9 @@ func main() {
 		fmt.Println("Input Roman number:")
 		fmt.Scanln(&line)
 		fmt.Printf("Input %s\n", line)
-		fmt.Printf("Return %d\n", romanToInt(line))
+		r := romanToInt(line)
+		fmt.Printf("Integer Return %d\n", r)
+		fmt.Printf("Back to Roman: %s\n", intToRoman(r))
 	}
 
 }
